@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { useState } from 'react';
 import { nanoid } from 'nanoid';
 import styled from 'styled-components';
 
@@ -50,38 +50,36 @@ const AddButton = styled.button`
 }
 `;
 
-class ContactForm extends Component {
-    state = {
-      name: '',
-      number: '',
+const ContactForm = ({ onAdd }) => {
+    const [name, setName] = useState('');
+    const [number, setNumber] = useState('');
+  
+    const handleSubmit = (event) => {
+    event.preventDefault();
+    onAdd({ id: nanoid(), name, number });
+    setName('');
+    setNumber('');
     };
   
-    handleSubmit = (event) => {
-      event.preventDefault();
-      this.props.onAdd({ id: nanoid(), name: this.state.name, number: this.state.number });
-      this.setState({ name: '', number: '' });
-    };
+  const handleNameChange = (event) => {
+    setName(event.target.value);
+  };
   
-    handleNameChange = (event) => {
-      this.setState({ name: event.target.value });
-    };
-  
-    handleNumberChange = (event) => {
-      let input = event.target.value;
-      input = input.replace(/\D/g, "").slice(0, 8); 
-      input = input.replace(/(\d{3})(\d{2})(\d{2})/, "$1-$2-$3"); 
-      this.setState({ number: input });
-    };
-  
-    render() {
+  const handleNumberChange = (event) => {
+    let input = event.target.value
+    .replace(/\D/g, "").slice(0, 8)
+    .replace(/(\d{3})(\d{2})(\d{2})/, "$1-$2-$3"); 
+    setNumber(input);
+  }
+
       return (
-        <FormContainer onSubmit={this.handleSubmit}>
+        <FormContainer onSubmit={handleSubmit}>
           <LabelName>
             <StyledName>Name:</StyledName>
             <InputName
               type="text"
-              value={this.state.name}
-              onChange={this.handleNameChange}
+              value={name}
+              onChange={handleNameChange}
               required
               placeholder="Name"
             />
@@ -92,8 +90,8 @@ class ContactForm extends Component {
               type="tel"
               pattern="[0-9]{3}-[0-9]{2}-[0-9]{2}"
               placeholder="123-45-67"
-              value={this.state.number}
-              onChange={this.handleNumberChange}
+              value={number}
+              onChange={handleNumberChange}
               required
             />
           </LabelName>
@@ -101,6 +99,5 @@ class ContactForm extends Component {
         </FormContainer>
       );
     }
-  };
   
   export default ContactForm;

@@ -15,7 +15,7 @@ const ButtonDel = styled.button`
 
 const ContactListItem = ({ contact:{name, number}, onDelete }) => (
   <li>
-        <ButtonDel title = {`remove ` + name + ` contact` } onClick={onDelete}>&#xD7;</ButtonDel>
+    <ButtonDel title = {`remove ` + name + ` contact` } onClick={onDelete}>&#xD7;</ButtonDel>
     {name}: {number}
   </li>
 );
